@@ -34,7 +34,6 @@ void setup() {
 void loop() {
   ss.speak(F("She sells seashells by the seashore"));
   ss.speak(F("Hello, I'm Speech Synthesis module"));
-  ss.speak(F("duck不必"));
   ss.speak(F("a b c d e f g"));
 
   /*Use text control identifier*/
