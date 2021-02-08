@@ -1,0 +1,101 @@
+#######################################
+# Syntax Coloring Map For DFRobot_SpeechSynthesis
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+DFRobot_SpeechSynthesis	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+DFRobot_SpeechSynthesis_UART	KEYWORD1
+DFRobot_SpeechSynthesis_I2C	KEYWORD1
+begin	KEYWORD2
+sleep	KEYWORD2
+wakeup	KEYWORD2
+setVoice	KEYWORD2
+setSpeed	KEYWORD2
+setTone	KEYWORD2
+setEnglishPron	KEYWORD2
+reset	KEYWORD2
+enableRhythm	KEYWORD2
+setOnePron	KEYWORD2
+setNamePron	KEYWORD2
+setZeroPron	KEYWORD2
+setLanguage	KEYWORD2
+enablePINYIN	KEYWORD2
+
+
+setSpeechStyle	KEYWORD2
+setDigitalPron	KEYWORD2
+stopSynthesis	KEYWORD2
+pauseSynthesis	KEYWORD2
+recoverSynthesis	KEYWORD2
+wait	KEYWORD2
+speakElish	KEYWORD2
+speak	KEYWORD2
+
+#######################################
+# Instances (KEYWORD2)
+#######################################
+
+CHINESE	LITERAL1
+ENGLISH	LITERAL1
+NONE	LITERAL1
+CATON	LITERAL1
+SMOOTH	LITERAL1
+PINYIN_ENABLE	LITERAL1
+PINYIN_DISABLE	LITERAL1
+CHINESEL	LITERAL1
+ENGLISHL	LITERAL1
+AUTOJUDGEL	LITERAL1
+NUMBER	LITERAL1
+
+
+NUMERIC	LITERAL1
+AUTOJUDGED	LITERAL1
+ZREO	LITERAL1
+OU	LITERAL1
+YAO	LITERAL1
+CHONE	LITERAL1
+NAME	LITERAL1
+AUTOJUDGEDN	LITERAL1
+MALE	LITERAL1
+FEMALE	LITERAL1
+DONALDDUCK	LITERAL1
+ALPHABET	LITERAL1
+WORD	LITERAL1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
