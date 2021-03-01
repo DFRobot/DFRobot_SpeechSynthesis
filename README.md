@@ -44,7 +44,12 @@ To use this library, first download the library file, paste it into the \Arduino
 
   /**
    *  @brief Set voice type 
-   *  @param type(MALE:male,FEMALE:female,DONALDDUCK:Donaldduck)
+   *  @param   FEMALE1,/**<Female 1, recommended>*/
+   *           MALE1,/**<Male 1, recommended>*/
+   *           FEMALE2,/**<Female 2>*/
+   *           MALE2,/**<Male 2>*/
+   *           DONALDDUCK,/**<Donald Duck>*/
+   *           FEMALE3,/**<Female 3>*/
    */
   void setSoundType(eSoundType_t type);
 
