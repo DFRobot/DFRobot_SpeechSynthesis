@@ -64,9 +64,9 @@ void DFRobot_SpeechSynthesis::setSoundType(eSoundType_t type)
      str="[m3]";
   }else if(type == MALE1){
      str="[m51]";
-  }else if(type ==FEMALE2){
+  }else if(type ==MALE2){
      str="[m52]";
-  }else if(type == MALE2){
+  }else if(type == FEMALE2){
      str="[m53]";
   }else if(type == DONALDDUCK){
      str="[m54]";
