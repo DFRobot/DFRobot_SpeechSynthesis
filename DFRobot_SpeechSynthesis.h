@@ -109,8 +109,8 @@ public:
   typedef enum{
     FEMALE1,/**<Female 1, recommended>*/
     MALE1,/**<Male 1, recommended>*/
-    FEMALE2,/**<Female 2>*/
-    MALE2,/**<Male 2>*/
+    MALE2,/**<Female 2>*/
+    FEMALE2,/**<Male 2>*/
     DONALDDUCK,/**<Donald Duck>*/
     FEMALE3,/**<Female 3>*/
   } eSoundType_t;
