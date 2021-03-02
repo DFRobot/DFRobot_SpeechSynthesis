@@ -56,7 +56,7 @@ To use this library, first download the library file, paste it into the \Arduino
   /**
    *  @brief Set tone 
    *  @param tone, tone value(0-9)
-  */
+   */
   void setTone(uint8_t tone);
 
   /**
