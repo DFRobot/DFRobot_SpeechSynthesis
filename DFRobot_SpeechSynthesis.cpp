@@ -34,7 +34,7 @@ void DFRobot_SpeechSynthesis::speakElish(String word){
     _unicode=NULL;
   }
 }
-void DFRobot_SpeechSynthesis::setVoice(uint8_t voc){
+void DFRobot_SpeechSynthesis::setVolume(uint8_t voc){
   String str="[v3]";
   if(voc > 9) voc = 9;
   str[2] = 48 + voc;

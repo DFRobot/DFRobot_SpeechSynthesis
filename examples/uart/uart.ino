@@ -20,7 +20,7 @@ void setup() {
   ss.begin(ssSerial1);
   
   //Set voice volume to 5
-  //ss.setVoice(5);
+  //ss.setVolume(5);
   //Set playback speed to 5
   //ss.setSpeed(5);
   //Set speaker to female 

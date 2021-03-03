@@ -15,7 +15,7 @@ void setup() {
   //Init speech synthesis sensor
   ss.begin();
   //Set voice volume to 5
-  //ss.setVoice(5);
+  //ss.setVolume(5);
   //Set playback speed to 5
   //ss.setSpeed(5);
   //Set speaker to female 

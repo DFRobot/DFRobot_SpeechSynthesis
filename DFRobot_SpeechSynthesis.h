@@ -155,13 +155,13 @@ public:
   
   /**
      @brief Set voice volume
-     @param voc, Volume value(0-9)
+     @param voc  Volume value(0-9)
   */
-  void setVoice(uint8_t voc);
+  void setVolume(uint8_t voc);
   
   /**
      @brief Set playback speed 
-     @param speed, Speed value (0-9)
+     @param speed Speed value (0-9)
   */
   void setSpeed(uint8_t speed);
 
@@ -172,8 +172,8 @@ public:
   void setSoundType(eSoundType_t type);
 
   /**
-     @brief Set tone 
-     @param tone, Tone value (0-9)
+     @brief Set the tone 
+     @param tone Tone value (0-9)
   */
   void setTone(uint8_t tone);
 

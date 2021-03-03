@@ -34,7 +34,7 @@ To use this library, first download the library file, paste it into the \Arduino
    *  @brief Set voice volume 
    *  @param voc, Volume value(0-9)
    */
-  void setVoice(uint8_t voc);
+  void setVolume(uint8_t voc);
 
   /**
    *  @brief Set playback speed 
@@ -54,7 +54,7 @@ To use this library, first download the library file, paste it into the \Arduino
   void setSoundType(eSoundType_t type);
 
   /**
-   *  @brief Set tone 
+   *  @brief Set the tone 
    *  @param tone, tone value(0-9)
    */
   void setTone(uint8_t tone);
