@@ -475,7 +475,7 @@ uint8_t ack = 0;
     sendCommand(&init,1);
     delay(50);
     speakElish("[n1]");
-    setVoice(5); 
+    setVolume(5); 
     setSpeed(5); 
     setTone(5);  
     setSoundType(FEMALE1);
@@ -587,7 +587,7 @@ bool DFRobot_SpeechSynthesis_UART::begin(Stream &s){
     return false;
    } else {
     speakElish("[n1]");
-    setVoice(5); 
+    setVolume(5); 
     setSpeed(5); 
     setTone(5);  
     setSoundType(FEMALE1);
