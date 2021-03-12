@@ -16,7 +16,7 @@ DFRobot_SpeechSynthesis_I2C	KEYWORD1
 begin	KEYWORD2
 sleep	KEYWORD2
 wakeup	KEYWORD2
-setVoice	KEYWORD2
+setVolume	KEYWORD2
 setSpeed	KEYWORD2
 setTone	KEYWORD2
 setEnglishPron	KEYWORD2
