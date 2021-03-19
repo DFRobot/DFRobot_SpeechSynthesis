@@ -17,7 +17,7 @@ DFRobot_SpeechSynthesis::DFRobot_SpeechSynthesis(){
 
 void DFRobot_SpeechSynthesis::speakElish(String word){
   uint16_t point = 0;
-  _len=word.length();
+  _len=word.length();DBG(_len);
   _unicode = (uint8_t *)malloc(_len+1);
   while(_index < _len){
   _unicode[point++] = (word[_index]&0x7f);
@@ -26,6 +26,7 @@ void DFRobot_SpeechSynthesis::speakElish(String word){
   sendPack(START_SYNTHESIS1,_unicode,_len);
 
   wait();
+  
   _index =0;
   _len = 0;
 
@@ -182,6 +183,7 @@ void DFRobot_SpeechSynthesis::reset(){
 }
 
 void DFRobot_SpeechSynthesis::speak(String word){
+  Serial.println("String");
   uint32_t uni=0;
   uint8_t utf8State = 0;
   DBG("\n");
@@ -200,6 +202,7 @@ void DFRobot_SpeechSynthesis::speak(String word){
   
   for(int i=0;i<=_len;i++){
     _utf8[i]= word[i]; //总的utf8码
+    //Serial.println(_utf8[i]);
   }
   DBG("\n");
   word="";
@@ -336,16 +339,12 @@ void DFRobot_SpeechSynthesis::speak(String word){
 
 }
 void DFRobot_SpeechSynthesis::wait(){
+	
+delay(20);
 #if defined(NRF5) || defined(ARDUINO_SAM_ZERO)
 
-
-
-
-
-
-
 while(readACK()!=0x4F)//等待语音播放完成
-  {} 
+{} 
 #else 
 while(readACK()!=0x41)//等待语音合成完成
   {}
@@ -360,7 +359,7 @@ readACK();
 readACK();
 
 */
-delay(10);
+
 }
 uint16_t DFRobot_SpeechSynthesis::getWordLen(){
   uint16_t index = 0;
@@ -407,7 +406,214 @@ uint16_t DFRobot_SpeechSynthesis::getWordLen(){
   }
   return length;
 }
+void DFRobot_SpeechSynthesis::speak(const __FlashStringHelper *data) {
 
+  sSubMess_t mess ;
+  mess.index = 0;
+  uint16_t uni = 0;
+  __index = 0;
+  uint8_t * _data = (uint8_t *)data;
+  while(pgm_read_byte(_data+_len) !=0){
+    _len++;
+  }
+  while (__index < _len) {
+    _isFlash = true;
+    mess =  getSubMess(_data);
+    if (mess.ischar == 2) {
+      uint8_t sendData[5] = {0xfd,(mess.length + 2) >> 8,(mess.length + 2) & 0xff,0x01,0x03};
+      sendCommand(sendData,5);
+      for (uint16_t i = 0; i < mess.index;) {
+        uint8_t utf8 = pgm_read_byte(_data + __index + i);
+        if (utf8 >= 0xe0) {
+          uni = utf8 & 15;
+          i++;
+          utf8 = pgm_read_byte(_data + __index + i);
+          uni <<= 6;
+          uni |= (utf8 & 0x03f);
+          i++;
+          utf8 = pgm_read_byte(_data + __index + i);
+          uni <<= 6;
+          uni |= (utf8 & 0x03f);
+
+          sendData[0] = uni & 0xff;
+          sendData[1] = uni >> 8;
+          sendCommand(sendData,2);
+          i++;
+        } else if (utf8 >= 0xc0) {
+          uni = utf8 & 0x1f;
+          i++;
+          utf8 = pgm_read_byte(_data + __index + i);
+          uni <<= 6;
+          uni |= (utf8 & 0x03f);
+          i++;
+          sendData[0] = uni & 0xff;
+          sendData[1] = uni >> 8;
+          sendCommand(sendData,2);
+        } 
+
+      }
+    }
+   
+    if (mess.ischar == 1) {
+      uint8_t sendData[5] = {0xfd,(mess.length + 2) >> 8,(mess.length + 2) & 0xff,0x01,0x00};
+      sendCommand(sendData,5);
+      for (uint16_t i = 0; i < mess.index;) {
+      uint8_t utf8 = pgm_read_byte(_data + __index + i);
+		  sendData[0] = utf8 & 0x7f;
+		  sendCommand(sendData,1);
+          i++;
+        }
+    }
+   if(mess.length == 0) break;
+   wait();
+ 
+    __index += mess.index;
+  }
+
+
+}
+
+sSubMess_t DFRobot_SpeechSynthesis::getSubMess(const void *data)
+{
+
+  uint16_t index = 0;
+  sSubMess_t mess ;
+  uint16_t length = 0;
+  uint8_t * _data = (uint8_t *)data;
+  if(_isFlash == true){
+      while(pgm_read_byte(_data+_len) !=0){
+         _len++;
+     }
+  } else {
+     _len = strlen((char*)_data);
+  }
+  bool frist = false;
+  uint8_t ischar = 0;
+  while (index < _len){
+    uint8_t utf8 ;
+    if(_isFlash == true){
+       utf8 = pgm_read_byte(_data + index + __index);
+    } else {
+       utf8 = _data[index +__index];
+    }
+    if (utf8 >= 0xfc) {
+      index += 6;
+      length += 4;
+    } else if (utf8 >= 0xf8) {
+      index += 5;
+      length += 3;
+    } else if (utf8 >= 0xf0) {
+      index += 4;
+      length += 3;
+    } else if (utf8 >= 0xe0) {
+      if (ischar == 1) {
+        break;
+      }
+      index += 3;
+      length += 2;
+      if (frist == false) {
+        ischar = 2;
+        frist = true;
+      }
+    } else if (utf8 >= 0xc0) {
+      if (ischar == 1) {
+        break;
+      }
+      index += 2;
+      length += 2;
+      if (frist == false) {
+        ischar = 2;
+        frist = true;
+      }
+    }else  if (utf8 <= 0x80) {
+      if (utf8 == 0) break;
+      if (ischar == 2) {
+        break;
+      }
+
+      index += 1;
+      length++;
+
+      if (frist == false) {
+        ischar = 1;
+        frist = true;
+      }
+    }
+  }
+  mess.ischar = ischar;
+  mess.length = length;
+  mess.index = index;
+  return mess;
+}
+
+void DFRobot_SpeechSynthesis::speak(const void *data)
+{
+  sSubMess_t mess ;
+  mess.index = 0;
+  uint16_t uni = 0;
+  __index = 0;
+  uint8_t * _data = (uint8_t *)data;
+  uint16_t _len = strlen((char*)_data);
+  while (__index < _len) {
+    _isFlash = false;
+    mess =  getSubMess(_data);
+    if (mess.ischar == 2) {
+      uint8_t sendData[5] = {0xfd,(mess.length + 2) >> 8,(mess.length + 2) & 0xff,0x01,0x03};
+      sendCommand(sendData,5);
+      for (uint16_t i = 0; i < mess.index;) {
+        uint8_t utf8 = _data[__index + i];
+        if (utf8 >= 0xe0) {
+          uni = utf8 & 15;
+          i++;
+          utf8 = _data[__index + i];
+          uni <<= 6;
+          uni |= (utf8 & 0x03f);
+          i++;
+          utf8 = _data[__index + i];
+          uni <<= 6;
+          uni |= (utf8 & 0x03f);
+
+          sendData[0] = uni & 0xff;
+          sendData[1] = uni >> 8;
+          sendCommand(sendData,2);
+          //
+	      //Serial.println(uni & 0xff,HEX);
+          //Serial.println(uni >> 8,HEX);
+          i++;
+        } else if (utf8 >= 0xc0) {
+          uni = utf8 & 0x1f;
+          i++;
+          utf8 = _data[__index + i];
+          uni <<= 6;
+          uni |= (utf8 & 0x03f);
+          i++;
+          sendData[0] = uni & 0xff;
+          sendData[1] = uni >> 8;
+          sendCommand(sendData,2);
+        } 
+
+      }
+      //Wire.endTransmission();    // stop transmitting
+    }
+   
+    if (mess.ischar == 1) {
+      uint8_t sendData[5] = {0xfd,(mess.length + 2) >> 8,(mess.length + 2) & 0xff,0x01,0x00};
+      sendCommand(sendData,5);
+      for (uint16_t i = 0; i < mess.index;) {
+      uint8_t utf8 = _data[__index + i];
+		  sendData[0] = utf8 & 0x7f;
+		  sendCommand(sendData,1);
+          i++;
+        }
+    }
+   if(mess.length == 0) break;
+   wait();
+ 
+    __index += mess.index;
+  }
+
+
+}
 void DFRobot_SpeechSynthesis::stopSynthesis(){
   sendPack(STOP_SYNTHESIS);
 }
@@ -475,7 +681,7 @@ uint8_t ack = 0;
     sendCommand(&init,1);
     delay(50);
     speakElish("[n1]");
-    setVolume(5); 
+    setVolume(1); 
     setSpeed(5); 
     setTone(5);  
     setSoundType(FEMALE1);
@@ -484,7 +690,7 @@ uint8_t ack = 0;
 uint8_t DFRobot_SpeechSynthesis_I2C::sendCommand(uint8_t *head,uint8_t *data,uint16_t length)
 {
 	 uint16_t lenTemp = 0;
-//Serial.println(length);
+  Serial.println(length);
   _pWire->beginTransmission(_deviceAddr);
   for(uint8_t i =0;i<5;i++){
      _pWire->write(head[i]);
@@ -502,6 +708,7 @@ uint8_t DFRobot_SpeechSynthesis_I2C::sendCommand(uint8_t *head,uint8_t *data,uin
      _pWire->beginTransmission(_deviceAddr);
      for(uint8_t i =0;i<lenTemp;i++){
       _pWire->write(data[i]);
+	  DBG(data[i]);
      }
      if( _pWire->endTransmission() != 0 ) {
          DBG("ERR_DATA_BUS");
@@ -533,11 +740,10 @@ uint8_t DFRobot_SpeechSynthesis_I2C::sendCommand(uint8_t *head,uint8_t *data,uin
 
 uint8_t DFRobot_SpeechSynthesis_I2C::sendCommand(uint8_t *data,uint8_t length)
 {
-
-
   _pWire->beginTransmission(_deviceAddr);
   for(uint8_t i =0;i<length;i++){
-   _pWire->write(data[i]);
+     _pWire->write(data[i]);
+     delayMicroseconds(150);
   }
   if( _pWire->endTransmission() != 0 ) {
       DBG("ERR_DATA_BUS");
@@ -553,7 +759,7 @@ uint8_t DFRobot_SpeechSynthesis_I2C::readACK(){
      uint8_t data1 =0;
      delay(20);
 
-#if defined(NRF5) || defined(ARDUINO_SAM_ZERO)
+#if defined(NRF5) || defined(ARDUINO_SAM_ZERO) || defined(esp32)
      _pWire->requestFrom(_deviceAddr, 2);
      delay(10);
      data = _pWire->read();
@@ -569,7 +775,7 @@ uint8_t DFRobot_SpeechSynthesis_I2C::readACK(){
    delay(10);
   if(_pWire->available()) {
      data = _pWire->read();
-     DBG(data,HEX);
+     //Serial.println(data,HEX);
     }
    return data;
 
@@ -586,8 +792,8 @@ bool DFRobot_SpeechSynthesis_UART::begin(Stream &s){
    if(_s == NULL){
     return false;
    } else {
-    speakElish("[n1]");
-    setVolume(5); 
+   // speakElish("[n1]");
+    setVolume(1); 
     setSpeed(5); 
     setTone(5);  
     setSoundType(FEMALE1);
@@ -638,9 +844,9 @@ uint8_t DFRobot_SpeechSynthesis_UART::readACK(){
   //DBG(data,HEX);
   if(_s->available()) {
      data = _s->read();
-     //DBG(data,HEX);
+     DBG(data,HEX);
   }
-  //DBG(data,HEX);
+  DBG(data,HEX);
   return data;
 
 }

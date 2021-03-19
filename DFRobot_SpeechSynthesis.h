@@ -36,12 +36,19 @@
 #define STOP_SYNTHESIS         0x02
 #define PAUSE_SYNTHESIS        0x03
 #define RECOVER_SYNTHESIS      0x04
+typedef struct
+{
+  uint8_t ischar ;
+  uint16_t index;
+  uint16_t length;
 
+} sSubMess_t;
 class DFRobot_SpeechSynthesis {
 public:
   #define ERR_OK             0      //No error
   #define ERR_DATA_BUS      -1      //Data bus error
   #define ERR_IC_VERSION    -2      //Chip version does not match
+
 
 
 
@@ -131,9 +138,9 @@ public:
   
 public:
   /**
-     @brief Constructor 
-     @param pWire I2C BUS pointer object， construct device, can pass parameter or not, default to Wire
-     @param address 7bits I2C address, the first three bits determine the value of the address, default to 0x50
+    * @brief Constructor 
+    * @param pWire I2C BUS pointer object， construct device, can pass parameter or not, default to Wire
+    * @param address 7bits I2C address, the first three bits determine the value of the address, default to 0x50
   */
   DFRobot_SpeechSynthesis();
   
@@ -142,6 +149,17 @@ public:
      @param word Content to be synthesized, could be Chinese, English, Number, etc. 
   */
   void speak(String word);
+  /**
+     @brief Speech synthesis function 
+     @param word Content to be synthesized, could be Chinese, English, Number, etc. 
+  */
+  void speak(const void *data);
+  
+  /**
+     @brief Speech synthesis function,the data to be converted is put into Flash
+     @param word Content to be synthesized, could be Chinese, English, Number, etc. 
+  */
+  void speak(const __FlashStringHelper *data);
   
   /**
      @brief Set sensor to sleep mode 
@@ -259,6 +277,7 @@ public:
      @brief Synthesize English char string
   */
   void speakElish(String word);
+  
 private:
 
 
@@ -267,14 +286,15 @@ private:
   uint16_t uniLen = 0;
   uint16_t _index=0;
   uint16_t _len=0;
-
+  uint16_t __index = 0;
   eState_t curState = NONE;
   eState_t lastState = NONE;
   bool lanChange = false;
+  bool _isFlash = false;
   uint16_t getWordLen();
   virtual uint8_t readACK()= 0;
   void sendPack(uint8_t cmd,uint8_t* data =NULL,uint16_t len = 0);
-
+  sSubMess_t getSubMess(const void *data);
   virtual uint8_t sendCommand(uint8_t *data,uint8_t length)=0;
   virtual uint8_t sendCommand(uint8_t *head,uint8_t *data,uint16_t length)=0;
 

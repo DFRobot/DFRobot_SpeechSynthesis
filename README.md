@@ -29,7 +29,12 @@ To use this library, first download the library file, paste it into the \Arduino
    *  @param word Content to be synthesized, it can be Chinese, English, number, etc. 
    */
   void speak(String word);
-
+  
+  /**
+   *  @brief Speech synthesis function,the data to be converted is put into Flash
+   *  @param word Content to be synthesized, could be Chinese, English, Number, etc. 
+  */
+  void speak(const __FlashStringHelper *data);
   /**
    *  @brief Set voice volume 
    *  @param voc, Volume value(0-9)
