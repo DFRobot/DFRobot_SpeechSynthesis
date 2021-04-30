@@ -305,7 +305,7 @@ class DFRobot_SpeechSynthesis_I2C :public DFRobot_SpeechSynthesis{
 public:
   DFRobot_SpeechSynthesis_I2C(TwoWire *pWire = &Wire, uint8_t address = I2C_ADDR);
   ~DFRobot_SpeechSynthesis_I2C();
-  bool begin();
+  void begin();
 private:
   uint8_t _deviceAddr;
   TwoWire *_pWire;

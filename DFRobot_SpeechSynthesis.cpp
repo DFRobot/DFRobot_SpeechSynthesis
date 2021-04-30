@@ -671,9 +671,9 @@ DFRobot_SpeechSynthesis_I2C::~DFRobot_SpeechSynthesis_I2C(){
   //_pWire->setClock(100000);
 }
 
-bool DFRobot_SpeechSynthesis_I2C::begin()
+void DFRobot_SpeechSynthesis_I2C::begin()
 {
-uint8_t ack = 0;
+    uint8_t ack = 0;
 
     _pWire->begin();
     //_pWire->setClock(100000);
