@@ -1,7 +1,7 @@
 # coding=gbk
 
 """ 
-  @file speechSynthesis.py
+  @file speech_synthesis.py
   @brief speech synthesis
   @n note: it takes time to stable alcohol concentration, about 1 minutes.
   @copyright   Copyright (c) 2010 DFRobot Co.Ltd (http://www.dfrobot.com)
@@ -24,11 +24,11 @@ I2C_MODE         = 0x01            # default use I2C1
 
 alcohol = DFRobot_SpeechSynthesis_I2C (I2C_MODE ,I2C_ADDR)
 #alcohol = DFRobot_SpeechSynthesis_UART(115200)
-alcohol.setVoice(9)#Set volume(0-9)
-alcohol.setSpeed(5)#Set playback speed (0-9)
-alcohol.setSoundType(FEMEAL)#Set voice type/FEMEAL/MEAL/DONALDDUCK
-alcohol.setTone(5)#Set tone(0-9)
-alcohol.setEnglishPron(WORD)#Set word synthesis mode /WORD/ALPHABET
+alcohol.set_voice(9)#Set volume(0-9)
+alcohol.set_speed(5)#Set playback speed (0-9)
+alcohol.set_soundType(FEMEAL)#Set voice type/FEMEAL/MEAL/DONALDDUCK
+alcohol.set_tone(5)#Set tone(0-9)
+alcohol.set_english_pron(WORD)#Set word synthesis mode /WORD/ALPHABET
 while True:
   alcohol.speak("i have a book")
   alcohol.speak("She sells seashells by the seashore")

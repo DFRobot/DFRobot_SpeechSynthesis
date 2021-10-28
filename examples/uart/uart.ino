@@ -1,12 +1,12 @@
 /*!
  * @file uart.ino
  * @brief Control speech synthesis sensor via UART, and synthetise speech
+ * @details phenomena：the speaker of the module plays English on a loop
  * @copyright   Copyright (c) 2010 DFRobot Co.Ltd (http://www.dfrobot.com)
- * @licence     The MIT License (MIT)
+ * @License     The MIT License (MIT)
  * @author [fengli](li.feng@dfrobot.com)
  * @version  V1.0
  * @date  2020-11-6
- * @get from https://www.dfrobot.com
  * @url https://github.com/DFRobot/DFRobot_SpeechSynthesis
  */
 #include "DFRobot_SpeechSynthesis.h"

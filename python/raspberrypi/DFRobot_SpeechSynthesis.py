@@ -2,13 +2,11 @@
   
 """ 
   @file DFRobot_SpeechSynthesis.py
-  @note DFRobot_SpeechSynthesis Class infrastructure, implementation of underlying methods
+  @brief DFRobot_SpeechSynthesis Class infrastructure, implementation of underlying methods
   @copyright   Copyright (c) 2010 DFRobot Co.Ltd (http://www.dfrobot.com)
-  @licence     The MIT License (MIT)
+  @license     The MIT License (MIT)
   @author      [fengli](li.feng@dfrobot.com)
   version  V1.0
-  date  2020-11-04
-  @get from https://www.dfrobot.com
   @url https://github.com/DFRobot/DFRobot_SpeechSynthesis
 """
 import serial
@@ -17,45 +15,46 @@ import smbus
 import array
 import numpy as np
 from sys import version_info
-I2C_ADDR               = 0x40  #
-INQUIRYSTATUS          = 0x21  #
+I2C_ADDR               = 0x40  #i2c address
+INQUIRYSTATUS          = 0x21  #Check status
 ENTERSAVEELETRI        = 0x88  #
-WAKEUP                 = 0xFF  #
+WAKEUP                 = 0xFF  #Wake-up command
 
-START_SYNTHESIS        = 0x01  #
-START_SYNTHESIS1       = 0x05  #
-STOP_SYNTHESIS         = 0x02  #
-PAUSE_SYNTHESIS        = 0x03  #
-RECOVER_SYNTHESIS      = 0x04  #
+START_SYNTHESIS        = 0x01  #start synthesis command 0
+START_SYNTHESIS1       = 0x05  #Start synthesis command 1
+STOP_SYNTHESIS         = 0x02  #End speech synthesis
+PAUSE_SYNTHESIS        = 0x03  #pause speech synthesis command
+RECOVER_SYNTHESIS      = 0x04  #Resume speech synthesis commands
 I2C_MODE                  = 0x01  
 UART_MODE                 = 0x02
 
-MEAL                  = 0x04
-FEMEAL                = 0x03
-DONALDDUCK            = 0x05
-ALPHABET              = 0X06
-WORD                  = 0X07
+MEAL                  = 0x04   #Male voice
+FEMEAL                = 0x03   #female voice
+DONALDDUCK            = 0x05   #Voice of Donald Duck
+
+ALPHABET              = 0X06   #Spell
+WORD                  = 0X07   #word
 
 
-CHINESE               = 0XA0
-ENGLISH               = 0XA1
-NONE                  = 0XA2
-CATON                 = 0XA3
-SMOOTH                = 0XA4
-PINYIN_ENABLE         = 0XA5
-PINYIN_DISABLE        = 0XA6
-CHINESEL              = 0XA7
-ENGLISHL              = 0XA8
-AUTOJUDGEL            = 0XA9
-NUMBER                = 0XAA
-NUMERIC               = 0XAB
-AUTOJUDGED            = 0XAC
-ZREO                  = 0XAD
-OU                    = 0XAE
-YAO                   = 0XAF
-CHONE                 = 0XB0
-NAME                  = 0XB1
-AUTOJUDGEDN           = 0XB2
+CHINESE               = 0XA0   #Chinese
+ENGLISH               = 0XA1   #English
+NONE                  = 0XA2   #
+CATON                 = 0XA3   #Word by word
+SMOOTH                = 0XA4   #Fluently
+PINYIN_ENABLE         = 0XA5   #Use Pinyin to read
+PINYIN_DISABLE        = 0XA6   #don't use pinyin pronunciation
+CHINESEL              = 0XA7   #
+ENGLISHL              = 0XA8   #
+AUTOJUDGEL            = 0XA9   #Auto Judge
+NUMBER                = 0XAA   #Telephone number
+NUMERIC               = 0XAB   #
+AUTOJUDGED            = 0XAC   #Auto Judge
+ZREO                  = 0XAD   #Read as 'zero'
+OU                    = 0XAE   #Read as'ou'
+YAO                   = 0XAF   #Read as 'yao'
+CHONE                 = 0XB0   #Read as 'yi'
+NAME                  = 0XB1   #
+AUTOJUDGEDN           = 0XB2   #
 ERROR                     = -1
   
 class DFRobot_SpeechSynthesis(object):
@@ -74,6 +73,11 @@ class DFRobot_SpeechSynthesis(object):
         self.ser.open()
 
   def speak(self ,string):
+      '''
+        @fn speak
+        @brief Speech synthesis function 
+        @param string word Content to be synthesized, could be Chinese, English, Number, etc. 
+      '''
       str = string.encode('gb2312')
       head = [0xfd,0x00,0x00,0x01,0x00]
       if version_info.major == 2 and version_info.minor == 7:
@@ -90,10 +94,11 @@ class DFRobot_SpeechSynthesis(object):
       self.write_cmd(data1)
       self.wait()
       return
-  '''
-    @brief Wait for speech synthesis to complete 
-  '''
+
   def wait(self):
+      '''
+        @brief Wait for speech synthesis to complete 
+      '''
       while 1:
         result =self.read_ack(1)
         if(result == 0x41):
@@ -102,32 +107,35 @@ class DFRobot_SpeechSynthesis(object):
         result =self.read_ack(1)
         if(result == 0x4f):
           break
-  '''
-    @brief Set voice volume 
-    @param voc, Volume value(0-9)
-  '''
-  def setVoice(self, voc):
+
+  def set_voice(self, voc):
+      '''
+        @brief Set voice volume 
+        @param voc Volume value(0-9)
+      '''
       list1 = [0xfd,0x00,0x06,0x01,0x00,91,118,49,93]
       if(voc > 9 or voc < 0):
          return
       list1[7]= voc + 48
       self.write_cmd(list1)
-  '''
-    @brief Set playback speed 
-    @param speed, Speed(0-9)
-  '''
-  def setSpeed(self, speed):
+
+  def set_speed(self, speed):
+      '''
+        @brief Set playback speed 
+        @param speed  Speed(0-9)
+      '''
       list1 = [0xfd,0x00,0x06,0x01,0x00,91,115,54,93]
 
       if(speed > 9 or speed < 0):
          return
       list1[7]= speed + 48
       self.write_cmd(list1)
-  '''
-    @brief Set voice type 
-    @param type(MALE:male, FEMALE:famale, DONALDDUCK:Donaldduck)
-  '''
-  def setSoundType(self, type):
+
+  def set_soundType(self, type):
+      '''
+        @brief Set voice type 
+        @param type(MALE:male, FEMALE:famale, DONALDDUCK:Donaldduck)
+      '''
       if(type == MEAL):
         self.speak("[m51]")
       elif(type == FEMEAL):
@@ -136,40 +144,44 @@ class DFRobot_SpeechSynthesis(object):
         self.speak("[m54]")
       else:
         print("no that type")
-  '''
-    @brief Set tone 
-    @param tone, Tone(0-9)
-  '''
-  def setTone(self, tone):
+
+  def set_tone(self, tone):
+      '''
+        @brief Set tone 
+        @param tone Tone(0-9)
+      '''
       list1 = [0xfd,0x00,0x06,0x01,0x00,91,116,54,93]
       if(tone > 9 or tone < 0):
          return
       list1[7]= tone + 48
       self.write_cmd(list1)
-  '''
-    @brief Set how to read English 
-    @param pron(ALPHABET: letter, WORD: word)
-  '''
-  def setEnglishPron(self, pron):  
+
+  def set_english_pron(self, pron):  
+     '''
+       @brief Set how to read English 
+       @param pron(ALPHABET: letter, WORD: word)
+     '''
      if(pron == ALPHABET):
        self.speak("[h1]")
      elif(pron == WORD):
        self.speak("[h2]")
-  '''
-     @brief This function is only used for reading Chinese
-     @param enable(true;alse)
-  '''
-  def enableRhythm(self,enable):
+
+  def enable_rhythm(self,enable):
+     '''
+        @brief This function is only used for reading Chinese
+        @param enable(true;alse)
+     '''
      if(enable == True):
         str1="[z1]"
      elif(enable ==False):
         str1="[z0]"
      self.speak(str1)
-  '''
-     @brief Set how to read long numbers 
-     @param pron(NUMBER: phone number, NUMERIC: number, AUTOJUDGED: auto judge)
-  '''
-  def setDigitalPron(self,pron):
+
+  def set_digitalPron(self,pron):
+     '''
+        @brief Set how to read long numbers 
+        @param pron(NUMBER: phone number, NUMERIC: number, AUTOJUDGED: auto judge)
+     '''
      if(pron == NUMBER):
         str1="[n1]"
      elif(pron ==NUMERIC):
@@ -177,31 +189,34 @@ class DFRobot_SpeechSynthesis(object):
      elif(pron == AUTOJUDGED):
         str1="[n0]"
      self.speak(str1)
-  '''
-     @brief Enable PinYin synthesis 
-     @param enable(true: enable, false:disable)
-  '''
-  def enablePINYIN(self,enable):
+
+  def enable_PINYIN(self,enable):
+     '''
+        @brief Enable PinYin synthesis 
+        @param enable(true: enable, false:disable)
+     '''
      if(enable == True):
         str1="[i1]"
      elif(enable ==False):
         str1="[i0]"
      self.speak(str1)
-  '''
-     @brief Set synthesis style 
-     @param enable(CATON: word by word; SMOOTH: fluently)
-  '''
-  def setSpeechStyle(self,style):
+
+  def set_speech_style(self,style):
+     '''
+        @brief Set synthesis style 
+        @param enable(CATON: word by word; SMOOTH: fluently)
+     '''
      if(style == CATON):
        str1="[f0]"
      elif(style ==SMOOTH):
        str1="[f1]"
      self.speak(str1)
-  '''
-     @brief Synthesize Arabic number, unit, special characters into Chinese or English 
-     @param style(CHINESEL:Chinese, ENGLISHL: English, AUTOJUDGEL: Auto judge)
-  '''
-  def setLanguage(self,style):
+
+  def set_language(self,style):
+    '''
+       @brief Synthesize Arabic number, unit, special characters into Chinese or English 
+       @param style(CHINESEL:Chinese, ENGLISHL: English, AUTOJUDGEL: Auto judge)
+    '''
     if(style == CHINESEL):
        str1="[g1]"
     elif(style ==ENGLISHL):
@@ -209,68 +224,72 @@ class DFRobot_SpeechSynthesis(object):
     elif(style == AUTOJUDGEL):
        str1="[g0]"
     self.speak(str1)
-  '''
-     @brief Set how to read "0" in phone number 
-     @param pron(ZREO: read as "zero"; OU: read as "ou")
-  '''
-  def setZeroPron(self,pron):
+
+  def set_zero_pron(self,pron):
+     '''
+        @brief Set how to read "0" in phone number 
+        @param pron(ZREO: read as "zero"; OU: read as "ou")
+     '''
      if(pron == ZREO):
         str1="[o0]"
      elif(pron ==OU):
         str1="[o1]"
      self.speak(str1)
-  '''
-    @brief Set how to read "1" in phone number 
-    @param pron(YAO: read as "yao"; CHONE: read as "yi")
-  '''
-  def setOnePron(self,pron):
+
+  def set_one_pron(self,pron):
+     '''
+       @brief Set how to read "1" in phone number 
+       @param pron(YAO: read as "yao"; CHONE: read as "yi")
+     '''
      if(pron == YAO):
         str1="[y0]"
      elif(pron ==CHONE):
         str1="[y1]"
      self.speak(str1)
-  '''
-     @brief Set whether to use surname reading principle mandatorily 
-     @param pron(NAME: mandatory; AUTOJUDGEDN: auto judge)
-  '''
-  def setNamePron(self,pron):
+
+  def set_name_pron(self,pron):
+     '''
+        @brief Set whether to use surname reading principle mandatorily 
+        @param pron(NAME: mandatory; AUTOJUDGEDN: auto judge)
+     '''
      if(pron == NAME):
         str1="[r1]"
      elif(pron ==AUTOJUDGEDN):
         str1="[r0]"
      self.speak(str1)
-  '''
-     @brief Test function 
-  '''
+
   def test(self ):
+    '''
+       @brief Test function 
+    '''
     data = [0xfd,0x00,0x0C,0x01,0x00,66,67,68,69,70,71,72,73,74,75]
     self.write_cmd(data)
-  '''
-    @brief Reset settings to default
-  '''
+
   def reset(self):
+    '''
+      @brief Reset settings to default
+    '''
     speakElish("[d]");
-'''
-  @brief An example of an i2c interface module
-'''
+
 class DFRobot_SpeechSynthesis_I2C(DFRobot_SpeechSynthesis): 
   def __init__(self ,bus ,addr):
     self.__addr = addr;
     #print(self.__addr)
     super(DFRobot_SpeechSynthesis_I2C, self).__init__(bus,0)
 
-  '''
-    @brief writes data to a register
-    @param data written data
-  '''
-  def write_cmd(self, data):
-        self.i2cbus.write_block_data(self.__addr,0x1,data)
-        #print(data)
 
-  '''
-    @brief read the data from the register
-  '''
+  def write_cmd(self, data):
+    '''
+      @brief writes data to a register
+      @param data written data
+    '''
+    self.i2cbus.write_block_data(self.__addr,0x1,data)
+    #print(data)
+
   def read_ack(self ,len):
+    '''
+      @brief read the data from the register
+    '''
     try:
       rslt = self.i2cbus.read_byte(self.__addr)
     except:
@@ -283,17 +302,18 @@ class DFRobot_SpeechSynthesis_UART(DFRobot_SpeechSynthesis):
     self.__Baud = Baud;
     super(DFRobot_SpeechSynthesis_UART, self).__init__(0,Baud)
 
-  '''
-    @brief writes data to a register
-    @param data written data
-  '''
   def write_cmd(self,data):
-      self.ser.write(data)
-      return
-  '''
-    @brief read the data from the register
-  '''
+    '''
+      @brief writes data to a register
+      @param data written data
+    '''
+    self.ser.write(data)
+    return
+
   def read_ack(self,len):
+    '''
+      @brief read the data from the register
+    '''
     #timenow = time.time()
     #recv = 0
     #i = 0

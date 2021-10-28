@@ -1,13 +1,13 @@
 /*!
-   @file DFRobot_SpeechSynthesis.h
-   @brief Basic structure of DFRobot_SpeechSynthesis class
-   @copyright   Copyright (c) 2010 DFRobot Co.Ltd (http://www.dfrobot.com)
-   @licence     The MIT License (MIT)
-   @author [fengli](li.feng@dfrobot.com)
-   @version  V1.0
-   @date  2020-08-17
-   @get from https://www.dfrobot.com
-   @https://github.com/DFRobot/DFRobot_SpeechSynthesis
+ * @file DFRobot_SpeechSynthesis.h
+ * @brief Basic structure of DFRobot_SpeechSynthesis class
+ * @details Synthesize the sound you need, support Chinese, English
+ * @copyright   Copyright (c) 2010 DFRobot Co.Ltd (http://www.dfrobot.com)
+ * @license     The MIT license (MIT)
+ * @author [fengli](li.feng@dfrobot.com)
+ * @version  V1.0
+ * @date  2020-08-17
+ * @url https://github.com/DFRobot/DFRobot_SpeechSynthesis
 */
 
 #ifndef DFROBOT_SPEECHSYNTHESIS_H
@@ -18,8 +18,7 @@
 #include "WProgram.h"
 #endif
 #include <Wire.h>
-//#define ENABLE_DBG
-// #include <SoftwareSerial.h>
+
 #ifdef ENABLE_DBG
 #define DBG(...) {Serial.print("[");Serial.print(__FUNCTION__); Serial.print("(): "); Serial.print(__LINE__); Serial.print(" ] "); Serial.println(__VA_ARGS__);}
 #else
@@ -27,22 +26,16 @@
 #endif
 
 #define I2C_ADDR               0x40  //i2c address
-#define INQUIRYSTATUS          0x21
-#define ENTERSAVEELETRI        0x88
-#define WAKEUP                 0xFF
+#define INQUIRYSTATUS          0x21  //Check status
+#define ENTERSAVEELETRI        0x88   
+#define WAKEUP                 0xFF  //Wake-up command
 
-#define START_SYNTHESIS        0x01
-#define START_SYNTHESIS1       0x02
-#define STOP_SYNTHESIS         0x02
-#define PAUSE_SYNTHESIS        0x03
-#define RECOVER_SYNTHESIS      0x04
-typedef struct
-{
-  uint8_t ischar ;
-  uint16_t index;
-  uint16_t length;
+#define START_SYNTHESIS        0x01  //Start synthesis command 0
+#define START_SYNTHESIS1       0x02  //Start synthesis command 1
+#define STOP_SYNTHESIS         0x02  //End speech synthesis
+#define PAUSE_SYNTHESIS        0x03  //pause speech synthesis command
+#define RECOVER_SYNTHESIS      0x04  //Resume speech synthesis commands
 
-} sSubMess_t;
 class DFRobot_SpeechSynthesis {
 public:
   #define ERR_OK             0      //No error
@@ -50,232 +43,264 @@ public:
   #define ERR_IC_VERSION    -2      //Chip version does not match
 
 
-
+  typedef struct
+  {
+    uint8_t ischar ;  
+    uint16_t index;
+    uint16_t length;
+  
+  }sSubMess_t;
 
   /**！
-    Speech Synthesis style 
-  */
+   *@enum Speech Synthesis style 
+   */
   typedef enum{
-    CATON,/**<Word by word>*/
-    SMOOTH,/**<Fluently>*/
+    eCaton,/**<Word by word>*/
+    eSmooth,/**<Fluently>*/
   } eSpeechStyle_t;
   
   /**
-    Whether synthesize PinYin
-  */
+   *@enum Whether synthesize PinYin
+   */
   typedef enum{
-    PINYIN_ENABLE,/**<Synthesize PinYin>*/
-    PINYIN_DISABLE,/**<Not>*/
+    ePinyinEnable,/**<Synthesize PinYin>*/
+    ePinyinDisable,/**<Not>*/
   } ePinyin_t;
   
   /**
-    Synthesize Arabic number, unit, special character into Chinese or English 
-  */
+   *@enum Synthesize Arabic number, unit, special character into Chinese or English 
+   */
   typedef enum{
-    CHINESEL,/**<Chinese>*/
-    ENGLISHL,/**<English>*/
-    AUTOJUDGEL,/**<Auto Judge>*/
+    eChinesel,/**<Chinese>*/
+    eEnglishl,/**<English>*/
+    eAutoJudgel,/**<Auto Judge>*/
   } eLanguage_t;
   
   /**
-   How to  read long numbers 
-  */
+   *@enum How to  read long numbers 
+   */
   typedef enum{
-    NUMBER,/**<Telephone number>*/
-    NUMERIC,/**<Number>*/
-    AUTOJUDGED,/**<Auto Judge>*/
+    eNumber,/**<Telephone number>*/
+    eNumeric,/**<Number>*/
+    eAutoJudged,/**<Auto Judge>*/
   } eDigitalPron_t;
   
   /**
-   How to read "0" 
-  */
+   *@enum How to read "0" 
+   */
   typedef enum{
-    ZREO,/**<Read as 'zero'>*/
-    OU,/**<Read as'ou'>*/
+    eZreo,/**<Read as 'zero'>*/
+    eOu,/**<Read as'ou'>*/
   } eZeroPron_t;
 
   /**
-    How to read "1" 
-  */
+   *@enum How to read "1" 
+   */
   typedef enum{
-    YAO,/**<Read as 'yao'>*/
-    CHONE,/**<Read as 'yi'>*/
+    eYao,/**<Read as 'yao'>*/
+    eChone,/**<Read as 'yi'>*/
   } eOnePron_t;
   
   /**
-   The function is only used for Chinese reading  
-  */
+   *@enum The function is only used for Chinese reading  
+   */
   typedef enum{
-    NAME,
-    AUTOJUDGEDN,
+    eName,
+    eAutoJudgedn,
   } eNamePron_t;
   
   /**
-    Select sound type 
-  */
+   *@enum Select sound type 
+   */
   typedef enum{
-    FEMALE1,/**<Female 1, recommended>*/
-    MALE1,/**<Male 1, recommended>*/
-    MALE2,/**<Male 2>*/
-    FEMALE2,/**<FEMALE 2>*/
-    DONALDDUCK,/**<Donald Duck>*/
-    FEMALE3,/**<Female 3>*/
+    eFemale1,    /**<Female 1, recommended>*/
+    eMale1,      /**<Male 1, recommended>*/
+    eMale2,      /**<Male 2>*/
+    eFemale2,    /**<FEMALE 2>*/
+    eDonaldDuck, /**<Donald Duck>*/
+    eFemale3,    /**<Female 3>*/
   } eSoundType_t;
 
   /**
-    How to read English 
-  */
+   *@enum How to read English 
+   */
   typedef enum{
-   ALPHABET,/**<Spell>*/
-   WORD,/**<word>*/
+   eAlphabet,/**<Spell>*/
+   eWord,/**<word>*/
   } eENpron_t;
   
   typedef enum{
-    CHINESE,
-    ENGLISH,
-    NONE,
+    eChinese,
+    eEnglish,
+    eNone,
   } eState_t;
   
 public:
-  /**
-    * @brief Constructor 
-    * @param pWire I2C BUS pointer object， construct device, can pass parameter or not, default to Wire
-    * @param address 7bits I2C address, the first three bits determine the value of the address, default to 0x50
-  */
+
   DFRobot_SpeechSynthesis();
   
   /**
-     @brief Speech synthesis function 
-     @param word Content to be synthesized, could be Chinese, English, Number, etc. 
-  */
+   * @fn speak
+   * @brief Speech synthesis function 
+   * @param word Content to be synthesized, could be Chinese, English, Number, etc. 
+   */
   void speak(String word);
+  
   /**
-     @brief Speech synthesis function 
-     @param word Content to be synthesized, could be Chinese, English, Number, etc. 
-  */
+   * @fn speak
+   * @brief Speech synthesis function 
+   * @param word Content to be synthesized, could be Chinese, English, Number, etc. 
+   */
   void speak(const void *data);
   
   /**
-     @brief Speech synthesis function,the data to be converted is put into Flash
-     @param word Content to be synthesized, could be Chinese, English, Number, etc. 
-  */
+   * @fn speak
+   * @brief Speech synthesis function,the data to be converted is put into Flash
+   * @param word Content to be synthesized, could be Chinese, English, Number, etc. 
+   */
   void speak(const __FlashStringHelper *data);
   
   /**
-     @brief Set sensor to sleep mode 
-  */
+   * @fn sleep
+   * @brief Set sensor to sleep mode 
+   */
   void sleep();
   
   /**
-     @brief Wake up sensor from sleep mode 
-  */
+   * @fn wakeup
+   * @brief Wake up sensor from sleep mode 
+   */
   void wakeup();
   
   /**
-     @brief Set voice volume
-     @param voc  Volume value(0-9)
-  */
+   * @fn setVolume
+   * @brief Set voice volume
+   * @param voc  Volume value(0-9)
+   */
   void setVolume(uint8_t voc);
   
   /**
-     @brief Set playback speed 
-     @param speed Speed value (0-9)
-  */
+   * @fn setSpeed
+   * @brief Set playback speed 
+   * @param speed Speed value (0-9)
+   */
   void setSpeed(uint8_t speed);
 
   /**
-     @brief Set sound type 
-     @param type(MALE:Male, FEMALE:Female, DONALDDUCK: Donaldduck)
-  */
+   * @fn setSoundType
+   * @brief Set sound type 
+   * @param type(MALE:Male, FEMALE:Female, DONALDDUCK: Donaldduck)
+   */
   void setSoundType(eSoundType_t type);
 
   /**
-     @brief Set the tone 
-     @param tone Tone value (0-9)
-  */
+   * @fn setTone
+   * @brief Set the tone 
+   * @param tone Tone value (0-9)
+   */
   void setTone(uint8_t tone);
 
   /**
-     @brief Set how to read English 
-     @param pron(ALPHABET: letter, WORD: word)
-  */
+   * @fn setEnglishPron
+   * @brief Set how to read English 
+   * @param pron(ALPHABET: letter, WORD: word)
+   */
   void setEnglishPron(eENpron_t pron);
   
   /**
-     @brief Reset settings to default 
-  */
+   * @fn reset
+   * @brief Reset settings to default 
+   */
   void reset();
   
   /**
-     @brief  The function is only used for Chinese reading
-     @param enable(true,false)
-  */
+   * @fn enableRhythm
+   * @brief  The function is only used for Chinese reading
+   * @param enable(true,false)
+   */
   void enableRhythm(bool enable);
   
   /**
-     @brief Set how to read "1" in phone number 
-     @param pron(YAO: read as "yao", CHONE: read as "yi")
-  */
+   * @fn setOnePron
+   * @brief Set how to read "1" in phone number 
+   * @param pron(YAO: read as "yao", CHONE: read as "yi")
+   */
   void setOnePron(eOnePron_t pron);
   
   /**
-     @brief Set whether to use surname reading principle mandatorily 
-     @param pron(NAME: force, AUTOJUDGEDN: auto judge)
-  */
+   * @fn setNamePron
+   * @brief Set whether to use surname reading principle mandatorily 
+   * @param pron(NAME: force, AUTOJUDGEDN: auto judge)
+   */
   void setNamePron(eNamePron_t pron);
   
   /**
-     @brief Set how to read "0" in phone number 
-     @param pron(ZREO: read as "zero", OU: read as "ou")
-  */
+   * @fn setZeroPron
+   * @brief set how to read "0" in phone number 
+   * @details set the sound of zero
+   * @param pron(ZREO: read as "zero", OU: read as "ou")
+   */
   void setZeroPron(eZeroPron_t pron);
   
   /**
-     @brief  Synthesize Arabic number, unit, special character into Chinese or English 
-     @param style(CHINESEL: Chinese, ENGLISHL: English, AUTOJUDGEL: Auto judge)
-  */
+   * @fn setLanguage
+   * @brief  Synthesize Arabic number, unit, special character into Chinese or English 
+   * @param style (CHINESEL: Chinese, ENGLISHL: English, AUTOJUDGEL: Auto judge)
+   */
   void setLanguage(eLanguage_t style);
   
   /**
-     @brief Enable PinYin Synthesis 
-     @param enable(true: enable, false: disable)
-  */
+   * @fn enablePINYIN
+   * @brief Enable PinYin Synthesis
+   * @details enable pinyin pronunciation
+   * @param enable(true: enable, false: disable)
+   */
   void enablePINYIN(bool enable);
   
   /**
-     @brief Set synthesis style 
-     @param enable(CATON: word by word, SMOOTH: fluently)
-  */
+   * @fn setSpeechStyle
+   * @brief Set synthesis style 
+   * @param enable(CATON: word by word, SMOOTH: fluently)
+   */
   void setSpeechStyle(eSpeechStyle_t style);
   
   /**
-     @brief Set how to read long numbers 
-     @param pron(NUMBER: phone number, NUMERIC: number, AUTOJUDGED: Auto judge)
-  */
+   * @fn setDigitalPron
+   * @brief Set how to read long numbers 
+   * @param pron (NUMBER: phone number, NUMERIC: number, AUTOJUDGED: Auto judge)
+   */
   void setDigitalPron(eDigitalPron_t pron);
   
   /**
-     @brief Stop synthesis 
-  */
+   * @fn stopSynthesis
+   * @brief Stop synthesis 
+   */
   void stopSynthesis();
+  
   /**
-     @brief Synthesis pause
-  */
+   * @fn pauseSynthesis
+   * @brief Synthesis pause
+   */
   void pauseSynthesis();
 
   /**
-     @brief Recover synthesis 
-  */
+   * @fn recoverSynthesis
+   * @brief Recover synthesis 
+   * @details resumes from paused compositing state
+   */
   void recoverSynthesis();
   
   /**
-     @brief Wait for speech synthesis to complete 
-  */
+   * @fn wait
+   * @brief Wait for speech synthesis to complete 
+   */
   void wait();
   
   /**
-     @brief Synthesize English char string
-  */
+   * @fn speakElish
+   * @brief Synthesize English char string
+   * @param word english string
+   */
   void speakElish(String word);
   
 private:
@@ -287,8 +312,8 @@ private:
   uint16_t _index=0;
   uint16_t _len=0;
   uint16_t __index = 0;
-  eState_t curState = NONE;
-  eState_t lastState = NONE;
+  eState_t curState = eNone;
+  eState_t lastState = eNone;
   bool lanChange = false;
   bool _isFlash = false;
   uint16_t getWordLen();
@@ -303,8 +328,18 @@ private:
 
 class DFRobot_SpeechSynthesis_I2C :public DFRobot_SpeechSynthesis{
 public:
+  /**
+   * @fn DFRobot_Sensor
+   * @brief Constructor 
+   * @param pWire I2C BUS pointer object， construct device, can pass parameter or not, default to Wire
+   * @param address 7bits I2C address, the first three bits determine the value of the address, default to 0x50
+   */
   DFRobot_SpeechSynthesis_I2C(TwoWire *pWire = &Wire, uint8_t address = I2C_ADDR);
   ~DFRobot_SpeechSynthesis_I2C();
+  /**
+   * @fn begin
+   * @brief init function
+   */
   void begin();
 private:
   uint8_t _deviceAddr;
@@ -318,8 +353,15 @@ private:
 
 class DFRobot_SpeechSynthesis_UART :public DFRobot_SpeechSynthesis{
 public:
+  /**
+   * @fn DFRobot_Sensor
+   * @brief Constructor 
+   */
   DFRobot_SpeechSynthesis_UART();
-  
+  /**
+   * @fn begin
+   * @brief init function
+   */
   bool begin(Stream &s);
 
 private:

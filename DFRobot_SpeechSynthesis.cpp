@@ -1,14 +1,13 @@
 #include "DFRobot_SpeechSynthesis.h"
 /*!
-   @file DFRobot_SpeechSynthesis.h
-   @brief Implementation of DFRobot_SpeechSynthesis class
-   @copyright   Copyright (c) 2010 DFRobot Co.Ltd (http://www.dfrobot.com)
-   @licence     The MIT License (MIT)
-   @author [fengli](li.feng@dfrobot.com)
-   @version  V1.0
-   @date  2020-08-17
-   @get from https://www.dfrobot.com
-   @https://github.com/DFRobot/DFRobot_SpeechSynthesis
+ * @file DFRobot_SpeechSynthesis.cpp
+ * @brief Implementation of DFRobot_SpeechSynthesis class
+ * @copyright   Copyright (c) 2010 DFRobot Co.Ltd (http://www.dfrobot.com)
+ * @licence     The MIT License (MIT)
+ * @author [fengli](li.feng@dfrobot.com)
+ * @version  V1.0
+ * @date  2020-08-17
+ * @https://github.com/DFRobot/DFRobot_SpeechSynthesis
 */
 
 DFRobot_SpeechSynthesis::DFRobot_SpeechSynthesis(){
@@ -61,17 +60,17 @@ void DFRobot_SpeechSynthesis::setTone(uint8_t tone){
 void DFRobot_SpeechSynthesis::setSoundType(eSoundType_t type)
 {
   String str;
-  if(type == FEMALE1){
+  if(type == eFemale1){
      str="[m3]";
-  }else if(type == MALE1){
+  }else if(type == eMale1){
      str="[m51]";
-  }else if(type ==MALE2){
+  }else if(type ==eMale2){
      str="[m52]";
-  }else if(type == FEMALE2){
+  }else if(type == eFemale2){
      str="[m53]";
-  }else if(type == DONALDDUCK){
+  }else if(type == eDonaldDuck){
      str="[m54]";
-  }else if(type == FEMALE3){
+  }else if(type == eFemale3){
      str="[m55]";
   }
   speakElish(str);
@@ -80,9 +79,9 @@ void DFRobot_SpeechSynthesis::setSoundType(eSoundType_t type)
 void DFRobot_SpeechSynthesis::setEnglishPron(eENpron_t pron)
 {
   String str;
-  if(pron == ALPHABET) {
+  if(pron == eAlphabet) {
      str="[h1]";
-  }else if(pron ==WORD){
+  }else if(pron ==eWord){
      str="[h2]";
   }
   speakElish(str);
@@ -91,11 +90,11 @@ void DFRobot_SpeechSynthesis::setEnglishPron(eENpron_t pron)
 
 void DFRobot_SpeechSynthesis::setDigitalPron(eDigitalPron_t pron){
   String str;
-  if(pron == NUMBER) {
+  if(pron == eNumber) {
      str="[n1]";
-  }else if(pron ==NUMERIC){
+  }else if(pron ==eNumeric){
      str="[n2]";
-  }else if(pron == AUTOJUDGED){
+  }else if(pron == eAutoJudged){
      str="[n0]";
   }
   speakElish(str);
@@ -103,9 +102,9 @@ void DFRobot_SpeechSynthesis::setDigitalPron(eDigitalPron_t pron){
 }
 void DFRobot_SpeechSynthesis::setSpeechStyle(eSpeechStyle_t style){
   String str;
-  if(style == CATON) {
+  if(style == eCaton) {
      str="[f0]";
-  }else if(style ==SMOOTH){
+  }else if(style ==eSmooth){
      str="[f1]";
   }
   speakElish(str);
@@ -124,11 +123,11 @@ void DFRobot_SpeechSynthesis::enablePINYIN(bool enable){
 }
 void DFRobot_SpeechSynthesis::setLanguage(eLanguage_t style){
   String str;
-  if(style == CHINESEL) {
+  if(style == eChinesel) {
      str="[g1]";
-  }else if(style ==ENGLISHL){
+  }else if(style ==eEnglishl){
      str="[g2]";
-  }else if(style == AUTOJUDGEL){
+  }else if(style == eAutoJudgel){
      str="[g0]";
   }
   speakElish(str);
@@ -136,9 +135,9 @@ void DFRobot_SpeechSynthesis::setLanguage(eLanguage_t style){
 }
 void DFRobot_SpeechSynthesis::setZeroPron(eZeroPron_t pron){
   String str;
-  if(pron == ZREO) {
+  if(pron == eZreo) {
      str="[o0]";
-  }else if(pron ==OU){
+  }else if(pron == eOu){
      str="[o1]";
   }
   speakElish(str);
@@ -147,9 +146,9 @@ void DFRobot_SpeechSynthesis::setZeroPron(eZeroPron_t pron){
 
 void DFRobot_SpeechSynthesis::setOnePron(eOnePron_t pron){
   String str;
-  if(pron == YAO) {
+  if(pron == eYao) {
      str="[y0]";
-  }else if(pron ==CHONE){
+  }else if(pron == eChone){
      str="[y1]";
   }
   speakElish(str);
@@ -157,9 +156,9 @@ void DFRobot_SpeechSynthesis::setOnePron(eOnePron_t pron){
 }
 void DFRobot_SpeechSynthesis::setNamePron(eNamePron_t pron){
   String str;
-  if(pron == NAME) {
+  if(pron == eName) {
      str="[r1]";
-  }else if(pron ==AUTOJUDGEDN){
+  }else if(pron == eAutoJudgedn){
      str="[r0]";
   }
   speakElish(str);
@@ -200,7 +199,7 @@ void DFRobot_SpeechSynthesis::speak(String word){
   }
   DBG("_len=");DBG(_len);
   
-  for(int i=0;i<=_len;i++){
+  for(uint32_t i=0;i <=_len;i++){
     _utf8[i]= word[i]; //总的utf8码
     //Serial.println(_utf8[i]);
   }
@@ -245,8 +244,8 @@ void DFRobot_SpeechSynthesis::speak(String word){
       DBG(_index);DBG(uni);
 
 	  }else if(_utf8[_index] >= 0xe0){
-        curState = CHINESE;
-        if((curState != lastState) && (lastState !=NONE)){
+        curState = eChinese;
+        if((curState != lastState) && (lastState !=eNone)){
           lanChange = true;
 		} else{
         utf8State = 2;
@@ -264,15 +263,15 @@ void DFRobot_SpeechSynthesis::speak(String word){
 	//Serial.println("aaaa");
 	      lanChange = true;
 	     }
-        lastState = CHINESE;
+        lastState = eChinese;
         DBG(_index);DBG(uni);
        _unicode[point++] = uni & 0xff;
        _unicode[point++] = uni >> 8  ;
 	   //if(point ==  24) lanChange = true;
 		}
       }else if(_utf8[_index] >= 0xc0){
-        curState = CHINESE;
-        if((curState != lastState) && (lastState !=NONE)){
+        curState = eChinese;
+        if((curState != lastState) && (lastState !=eNone)){
           lanChange = true;
 
 		}else{
@@ -285,46 +284,46 @@ void DFRobot_SpeechSynthesis::speak(String word){
         utf8State--;
         _index++;
       }
-	  lastState = CHINESE;
+	  lastState = eChinese;
        _unicode[point++] = uni & 0xff;
        _unicode[point++] = uni >> 8  ;
 	   //if(point ==  24) lanChange = true;
 		}
       }else if(_utf8[_index] <=0x80){
-        curState = ENGLISH;
-        if((curState != lastState) && (lastState !=NONE)){
+        curState = eEnglish;
+        if((curState != lastState) && (lastState !=eNone)){
           lanChange = true;
 
         }else{
        _unicode[point++] = (_utf8[_index]&0x7f);
        _index++;
-       lastState = ENGLISH;
+       lastState = eEnglish;
        if(/*(point ==  24) || */(_utf8[_index] == 0x20)|| (_utf8[_index] == 0x2c)) lanChange = true;
        }
       } 
    if(lanChange == true){
-     if(lastState == CHINESE){
+     if(lastState == eChinese){
          sendPack(START_SYNTHESIS,_unicode,point);
 		 wait();
-	  }else if(lastState == ENGLISH){
+	  }else if(lastState == eEnglish){
          sendPack(START_SYNTHESIS1,_unicode,point);
 		 wait();
 	  }
-	  lastState = NONE;
-	  curState = NONE;
+	  lastState = eNone;
+	  curState = eNone;
 	  point = 0;
 	  lanChange = false;
    }
   }
-     if(lastState == CHINESE){
+     if(lastState == eChinese){
          sendPack(START_SYNTHESIS,_unicode,point);
         wait();
-	  }else if(lastState == ENGLISH){
+	  }else if(lastState == eEnglish){
          sendPack(START_SYNTHESIS1,_unicode,point);
 		 wait();
 	  }
-	  lastState = NONE;
-	  curState = NONE;
+	  lastState = eNone;
+	  curState = eNone;
 	  point = 0;
 	  lanChange = false;
 
@@ -363,7 +362,6 @@ readACK();
 }
 uint16_t DFRobot_SpeechSynthesis::getWordLen(){
   uint16_t index = 0;
-  uint32_t uni=0;
   uint16_t length = 0;DBG("\n");
   DBG("len=");DBG(_len);
   while(index < _len){
@@ -473,7 +471,7 @@ void DFRobot_SpeechSynthesis::speak(const __FlashStringHelper *data) {
 
 }
 
-sSubMess_t DFRobot_SpeechSynthesis::getSubMess(const void *data)
+DFRobot_SpeechSynthesis::sSubMess_t DFRobot_SpeechSynthesis::getSubMess(const void *data)
 {
 
   uint16_t index = 0;
@@ -673,8 +671,6 @@ DFRobot_SpeechSynthesis_I2C::~DFRobot_SpeechSynthesis_I2C(){
 
 void DFRobot_SpeechSynthesis_I2C::begin()
 {
-    uint8_t ack = 0;
-
     _pWire->begin();
     //_pWire->setClock(100000);
     uint8_t init = 0xAA;
@@ -684,8 +680,8 @@ void DFRobot_SpeechSynthesis_I2C::begin()
     setVolume(5); 
     setSpeed(5); 
     setTone(5);  
-    setSoundType(FEMALE1);
-    setEnglishPron(WORD);
+    setSoundType(eFemale1);
+    setEnglishPron(eWord);
 }
 uint8_t DFRobot_SpeechSynthesis_I2C::sendCommand(uint8_t *head,uint8_t *data,uint16_t length)
 {
@@ -796,8 +792,8 @@ bool DFRobot_SpeechSynthesis_UART::begin(Stream &s){
     setVolume(5); 
     setSpeed(5); 
     setTone(5);  
-    setSoundType(FEMALE1);
-    setEnglishPron(WORD);
+    setSoundType(eFemale1);
+    setEnglishPron(eWord);
     return true;
    }
    
