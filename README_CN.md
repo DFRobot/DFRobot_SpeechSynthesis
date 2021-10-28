@@ -82,8 +82,7 @@ Raspberry Pi      |      √       |              |             |
 
 ## History
 
-- Data 2021-8-12
-- Version V1.0
+- 2021/08/12 - 1.0.0 版本
 
 
 ## Credits
