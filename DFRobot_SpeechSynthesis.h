@@ -52,7 +52,7 @@ public:
   }sSubMess_t;
 
   /**！
-   *@enum Speech Synthesis style 
+   *@enum eSpeechStyle_t Speech Synthesis style 
    */
   typedef enum{
     eCaton,/**<Word by word>*/
@@ -60,7 +60,7 @@ public:
   } eSpeechStyle_t;
   
   /**
-   *@enum Whether synthesize PinYin
+   *@enum ePinyin_t Whether synthesize PinYin
    */
   typedef enum{
     ePinyinEnable,/**<Synthesize PinYin>*/
@@ -68,7 +68,7 @@ public:
   } ePinyin_t;
   
   /**
-   *@enum Synthesize Arabic number, unit, special character into Chinese or English 
+   *@enum eLanguage_t Synthesize Arabic number, unit, special character into Chinese or English 
    */
   typedef enum{
     eChinesel,/**<Chinese>*/
@@ -77,7 +77,7 @@ public:
   } eLanguage_t;
   
   /**
-   *@enum How to  read long numbers 
+   *@enum eDigitalPron_t How to  read long numbers 
    */
   typedef enum{
     eNumber,/**<Telephone number>*/
@@ -86,7 +86,7 @@ public:
   } eDigitalPron_t;
   
   /**
-   *@enum How to read "0" 
+   *@enum eZeroPron_t How to read "0" 
    */
   typedef enum{
     eZreo,/**<Read as 'zero'>*/
@@ -94,7 +94,7 @@ public:
   } eZeroPron_t;
 
   /**
-   *@enum How to read "1" 
+   *@enum eOnePron_t How to read "1" 
    */
   typedef enum{
     eYao,/**<Read as 'yao'>*/
@@ -102,7 +102,7 @@ public:
   } eOnePron_t;
   
   /**
-   *@enum The function is only used for Chinese reading  
+   *@enum eNamePron_t The function is only used for Chinese reading  
    */
   typedef enum{
     eName,
@@ -110,7 +110,7 @@ public:
   } eNamePron_t;
   
   /**
-   *@enum Select sound type 
+   *@enum eSoundType_t Select sound type 
    */
   typedef enum{
     eFemale1,    /**<Female 1, recommended>*/
@@ -122,7 +122,7 @@ public:
   } eSoundType_t;
 
   /**
-   *@enum How to read English 
+   *@enum eENpron_t How to read English 
    */
   typedef enum{
    eAlphabet,/**<Spell>*/
@@ -189,7 +189,7 @@ public:
   /**
    * @fn setSoundType
    * @brief Set sound type 
-   * @param type(MALE:Male, FEMALE:Female, DONALDDUCK: Donaldduck)
+   * @param type eMale:Male, eFemale:Female, eDonaldduck: Donaldduck 
    */
   void setSoundType(eSoundType_t type);
 
@@ -203,7 +203,7 @@ public:
   /**
    * @fn setEnglishPron
    * @brief Set how to read English 
-   * @param pron(ALPHABET: letter, WORD: word)
+   * @param pron eAlphabet: letter, eWord: word
    */
   void setEnglishPron(eENpron_t pron);
   
@@ -216,21 +216,21 @@ public:
   /**
    * @fn enableRhythm
    * @brief  The function is only used for Chinese reading
-   * @param enable(true,false)
+   * @param enable true,false
    */
   void enableRhythm(bool enable);
   
   /**
    * @fn setOnePron
    * @brief Set how to read "1" in phone number 
-   * @param pron(YAO: read as "yao", CHONE: read as "yi")
+   * @param pron eYao: read as "yao", eChone: read as "yi"
    */
   void setOnePron(eOnePron_t pron);
   
   /**
    * @fn setNamePron
    * @brief Set whether to use surname reading principle mandatorily 
-   * @param pron(NAME: force, AUTOJUDGEDN: auto judge)
+   * @param pron eName: force, eAutojudgedn: auto judge
    */
   void setNamePron(eNamePron_t pron);
   
@@ -238,14 +238,14 @@ public:
    * @fn setZeroPron
    * @brief set how to read "0" in phone number 
    * @details set the sound of zero
-   * @param pron(ZREO: read as "zero", OU: read as "ou")
+   * @param pron eZreo: read as "zero", eOu: read as "ou"
    */
   void setZeroPron(eZeroPron_t pron);
   
   /**
    * @fn setLanguage
    * @brief  Synthesize Arabic number, unit, special character into Chinese or English 
-   * @param style (CHINESEL: Chinese, ENGLISHL: English, AUTOJUDGEL: Auto judge)
+   * @param style eChinesel: Chinese, eEnglishl: English, eAutojudgel: Auto judge
    */
   void setLanguage(eLanguage_t style);
   
@@ -253,21 +253,21 @@ public:
    * @fn enablePINYIN
    * @brief Enable PinYin Synthesis
    * @details enable pinyin pronunciation
-   * @param enable(true: enable, false: disable)
+   * @param enable true: enable, false: disable 
    */
   void enablePINYIN(bool enable);
   
   /**
    * @fn setSpeechStyle
    * @brief Set synthesis style 
-   * @param enable(CATON: word by word, SMOOTH: fluently)
+   * @param style eCaton: word by word, eSmooth: fluently
    */
   void setSpeechStyle(eSpeechStyle_t style);
   
   /**
    * @fn setDigitalPron
    * @brief Set how to read long numbers 
-   * @param pron (NUMBER: phone number, NUMERIC: number, AUTOJUDGED: Auto judge)
+   * @param pron eNumber: phone number, eNumeric: number, eAutojudged: Auto judge
    */
   void setDigitalPron(eDigitalPron_t pron);
   
@@ -329,7 +329,7 @@ private:
 class DFRobot_SpeechSynthesis_I2C :public DFRobot_SpeechSynthesis{
 public:
   /**
-   * @fn DFRobot_Sensor
+   * @fn DFRobot_SpeechSynthesis_I2C
    * @brief Constructor 
    * @param pWire I2C BUS pointer object， construct device, can pass parameter or not, default to Wire
    * @param address 7bits I2C address, the first three bits determine the value of the address, default to 0x50
@@ -354,7 +354,7 @@ private:
 class DFRobot_SpeechSynthesis_UART :public DFRobot_SpeechSynthesis{
 public:
   /**
-   * @fn DFRobot_Sensor
+   * @fn DFRobot_SpeechSynthesis_UART
    * @brief Constructor 
    */
   DFRobot_SpeechSynthesis_UART();

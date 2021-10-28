@@ -62,12 +62,12 @@ To use this library, first download the library file, paste it into the \Arduino
   /**
    * @fn setSoundType
    * @brief Set voice type 
-   * @param FEMALE1,<Female 1, recommended>
-   *        MALE1,<Male 1, recommended>
-   *        MALE2,<Male 2>
-   *        FEMALE2,<Female 2>
-   *        DONALDDUCK,<Donald Duck>
-   *        FEMALE3,<Female 3>
+   * @param eFemale1,<Female 1, recommended>
+   *        eMale1,<Male 1, recommended>
+   *        eMale2,<Male 2>
+   *        eFemale2,<Female 2>
+   *        eDonaldDuck,<Donald Duck>
+   *        eFemale3,<Female 3>
    */
   void setSoundType(eSoundType_t type);
 
@@ -81,7 +81,7 @@ To use this library, first download the library file, paste it into the \Arduino
   /**
    * @fn setEnglishPron
    * @brief Set how to read English 
-   * @param pron(ALPHABET: letter, WORD: word)
+   * @param pron(eAlphabet: letter, eWord: word)
    */
   void setEnglishPron(eENpron_t pron);
 
