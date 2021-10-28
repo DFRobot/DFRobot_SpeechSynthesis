@@ -88,8 +88,7 @@ Run the program:
 
 ## History
 
-- data 2020-11-6
-- version V1.0
+- 2021/08/12 - 1.0.0 版本
 
 
 ## Credits
