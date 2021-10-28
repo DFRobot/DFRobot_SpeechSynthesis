@@ -1,9 +1,9 @@
-# DFRobot_SpeechSynthesis_V2
+# DFRobot_SpeechSynthesis
 
 让声音为你的项目增添一抹特色！连接上语音合成模块，再添加几行简单的代码就可以让您的项目开口说话。无论是中文还是英文对于语音合成模块来说都是so easy，播报当前时间，播报环境数据统统不在话下，与语音识别模块结合还可实现语音对话！该模块采用I2C和UART两种通讯方式，Gravity接口，兼容绝大部分主控。模块上已经自带了一个喇叭，所以您无需再额外的添加喇叭。
    
 
-![正反面svg效果图](../../resources/images/dfr0760.png)
+![正反面svg效果图](./resources/images/dfr0760.png)
 
 ## 产品链接（https://www.dfrobot.com.cn/goods-3014.html）
     DFR0760：中英文语音合成模块
