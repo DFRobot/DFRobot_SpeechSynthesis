@@ -39,33 +39,33 @@ speech_synthesis.py
 ```python
 
   def speak(self ,string):
-    '''
+    '''！
       @brief Speech Synthesis
       @param string Content to be synthesized, could be Chinese, English, number, etc. 
     '''
 
   def set_voice(self, voc):
-    '''
+    '''！
       @brief Set voice volume 
       @param voc  Volume(0-9)
     '''
   def set_speed(self, speed):
-    '''
+    '''！
       @brief Set playback speed 
       @param speed  Speed (0-9)
     '''
   def set_sound_type(self, type):
-    '''
+    '''！
       @brief Set voice type 
       @param type (MALE:male, FEMALE:female, DONALDDUCK: DonaldDuck)
     '''
   def set_tone(self, tone):
-    '''
+    '''！
       @brief Set tone 
       @param tone  Tone(0-9)
     '''
   def set_english_pron(self, pron): 
-    '''
+    '''！
       @brief Set how to read English 
       @param pron (ALPHABET: letter, WORD: word)
     '''

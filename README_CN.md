@@ -1,4 +1,5 @@
 # DFRobot_SpeechSynthesis
+- [English Version](./README.md)
 
 让声音为你的项目增添一抹特色！连接上语音合成模块，再添加几行简单的代码就可以让您的项目开口说话。无论是中文还是英文对于语音合成模块来说都是so easy，播报当前时间，播报环境数据统统不在话下，与语音识别模块结合还可实现语音对话！该模块采用I2C和UART两种通讯方式，Gravity接口，兼容绝大部分主控。模块上已经自带了一个喇叭，所以您无需再额外的添加喇叭。
    
@@ -8,7 +9,7 @@
 ## 产品链接（https://www.dfrobot.com.cn/goods-3014.html）
     DFR0760：中英文语音合成模块
 
-## Table of Contents
+## 目录
 
 * [Summary](#summary)
 * [Installation](#installation)
@@ -17,16 +18,17 @@
 * [History](#history)
 * [Credits](#credits)
 
-## Summary
+## 概述
 
    1. Speech Synthesis <br>
 
 
-## Installation
+## 库安装
 
-To use this library, first download the library file, paste it into the \Arduino\libraries directory, then open the examples folder and run the demo in the folder.
+使用此库前，请首先下载库文件，将其粘贴到\Arduino\libraries目录中，然后打开examples文件
+夹并在该文件夹中运行演示。
 
-## Methods
+## 方法
 
 ```C++
     
@@ -67,7 +69,7 @@ To use this library, first download the library file, paste it into the \Arduino
   void reset();
 ```
 
-## Compatibility
+## 兼容性
 
 MCU                | Work Well    | Work Wrong   | Untested    | Remarks
 ------------------ | :----------: | :----------: | :---------: | -----
@@ -80,12 +82,12 @@ Micro:bit        |      √       |              |             |
 FireBeetle-M0        |      √       |              |             | 
 Raspberry Pi      |      √       |              |             | 
 
-## History
+## 历史
 
 - 2021/08/12 - 1.0.0 版本
 
 
-## Credits
+## 创作者
 
 Written by fengli(li.feng@dfrobot.com), 2020.8.12 (Welcome to our [website](https://www.dfrobot.com/))
 

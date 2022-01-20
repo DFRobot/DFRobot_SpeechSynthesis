@@ -1,12 +1,12 @@
 # coding=gbk
-  
 """ 
   @file DFRobot_SpeechSynthesis.py
   @brief DFRobot_SpeechSynthesis Class infrastructure, implementation of underlying methods
   @copyright   Copyright (c) 2010 DFRobot Co.Ltd (http://www.dfrobot.com)
   @license     The MIT License (MIT)
   @author      [fengli](li.feng@dfrobot.com)
-  version  V1.0
+  @version  V1.0
+  @date        2020-10-9
   @url https://github.com/DFRobot/DFRobot_SpeechSynthesis
 """
 import serial
@@ -73,7 +73,7 @@ class DFRobot_SpeechSynthesis(object):
         self.ser.open()
 
   def speak(self ,string):
-      '''
+      '''！
         @fn speak
         @brief Speech synthesis function 
         @param string word Content to be synthesized, could be Chinese, English, Number, etc. 
@@ -96,7 +96,7 @@ class DFRobot_SpeechSynthesis(object):
       return
 
   def wait(self):
-      '''
+      '''！
         @brief Wait for speech synthesis to complete 
       '''
       while 1:
@@ -109,7 +109,7 @@ class DFRobot_SpeechSynthesis(object):
           break
 
   def set_voice(self, voc):
-      '''
+      '''！
         @brief Set voice volume 
         @param voc Volume value(0-9)
       '''
@@ -120,7 +120,7 @@ class DFRobot_SpeechSynthesis(object):
       self.write_cmd(list1)
 
   def set_speed(self, speed):
-      '''
+      '''！
         @brief Set playback speed 
         @param speed  Speed(0-9)
       '''
@@ -132,7 +132,7 @@ class DFRobot_SpeechSynthesis(object):
       self.write_cmd(list1)
 
   def set_soundType(self, type):
-      '''
+      '''！
         @brief Set voice type 
         @param type(MALE:male, FEMALE:famale, DONALDDUCK:Donaldduck)
       '''
@@ -146,7 +146,7 @@ class DFRobot_SpeechSynthesis(object):
         print("no that type")
 
   def set_tone(self, tone):
-      '''
+      '''！
         @brief Set tone 
         @param tone Tone(0-9)
       '''
@@ -157,7 +157,7 @@ class DFRobot_SpeechSynthesis(object):
       self.write_cmd(list1)
 
   def set_english_pron(self, pron):  
-     '''
+     '''！
        @brief Set how to read English 
        @param pron(ALPHABET: letter, WORD: word)
      '''
@@ -167,7 +167,7 @@ class DFRobot_SpeechSynthesis(object):
        self.speak("[h2]")
 
   def enable_rhythm(self,enable):
-     '''
+     '''！
         @brief This function is only used for reading Chinese
         @param enable(true;alse)
      '''
@@ -178,7 +178,7 @@ class DFRobot_SpeechSynthesis(object):
      self.speak(str1)
 
   def set_digitalPron(self,pron):
-     '''
+     '''！
         @brief Set how to read long numbers 
         @param pron(NUMBER: phone number, NUMERIC: number, AUTOJUDGED: auto judge)
      '''
@@ -191,7 +191,7 @@ class DFRobot_SpeechSynthesis(object):
      self.speak(str1)
 
   def enable_PINYIN(self,enable):
-     '''
+     '''！
         @brief Enable PinYin synthesis 
         @param enable(true: enable, false:disable)
      '''
@@ -202,7 +202,7 @@ class DFRobot_SpeechSynthesis(object):
      self.speak(str1)
 
   def set_speech_style(self,style):
-     '''
+     '''！
         @brief Set synthesis style 
         @param enable(CATON: word by word; SMOOTH: fluently)
      '''
@@ -213,7 +213,7 @@ class DFRobot_SpeechSynthesis(object):
      self.speak(str1)
 
   def set_language(self,style):
-    '''
+    '''！
        @brief Synthesize Arabic number, unit, special characters into Chinese or English 
        @param style(CHINESEL:Chinese, ENGLISHL: English, AUTOJUDGEL: Auto judge)
     '''
@@ -226,7 +226,7 @@ class DFRobot_SpeechSynthesis(object):
     self.speak(str1)
 
   def set_zero_pron(self,pron):
-     '''
+     '''！
         @brief Set how to read "0" in phone number 
         @param pron(ZREO: read as "zero"; OU: read as "ou")
      '''
@@ -237,7 +237,7 @@ class DFRobot_SpeechSynthesis(object):
      self.speak(str1)
 
   def set_one_pron(self,pron):
-     '''
+     '''！
        @brief Set how to read "1" in phone number 
        @param pron(YAO: read as "yao"; CHONE: read as "yi")
      '''
@@ -248,7 +248,7 @@ class DFRobot_SpeechSynthesis(object):
      self.speak(str1)
 
   def set_name_pron(self,pron):
-     '''
+     '''！
         @brief Set whether to use surname reading principle mandatorily 
         @param pron(NAME: mandatory; AUTOJUDGEDN: auto judge)
      '''
@@ -259,14 +259,14 @@ class DFRobot_SpeechSynthesis(object):
      self.speak(str1)
 
   def test(self ):
-    '''
+    '''！
        @brief Test function 
     '''
     data = [0xfd,0x00,0x0C,0x01,0x00,66,67,68,69,70,71,72,73,74,75]
     self.write_cmd(data)
 
   def reset(self):
-    '''
+    '''！
       @brief Reset settings to default
     '''
     speakElish("[d]");
@@ -279,7 +279,7 @@ class DFRobot_SpeechSynthesis_I2C(DFRobot_SpeechSynthesis):
 
 
   def write_cmd(self, data):
-    '''
+    '''！
       @brief writes data to a register
       @param data written data
     '''
@@ -287,7 +287,7 @@ class DFRobot_SpeechSynthesis_I2C(DFRobot_SpeechSynthesis):
     #print(data)
 
   def read_ack(self ,len):
-    '''
+    '''！
       @brief read the data from the register
     '''
     try:
@@ -303,7 +303,7 @@ class DFRobot_SpeechSynthesis_UART(DFRobot_SpeechSynthesis):
     super(DFRobot_SpeechSynthesis_UART, self).__init__(0,Baud)
 
   def write_cmd(self,data):
-    '''
+    '''！
       @brief writes data to a register
       @param data written data
     '''
@@ -311,7 +311,7 @@ class DFRobot_SpeechSynthesis_UART(DFRobot_SpeechSynthesis):
     return
 
   def read_ack(self,len):
-    '''
+    '''！
       @brief read the data from the register
     '''
     #timenow = time.time()
